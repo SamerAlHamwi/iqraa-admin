@@ -12,6 +12,7 @@ function filterTable(tableId, query) {
 
 // Global initialization
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof renderCodesTable === 'function') renderCodesTable();
-    if (typeof renderReqsTable === 'function') renderReqsTable('all');
+    if (typeof renderCodesTable === 'function' && document.getElementById('p-codes')?.style.display !== 'none') renderCodesTable();
+    if (typeof renderReqsTable === 'function' && document.getElementById('p-code-requests')?.style.display !== 'none') renderReqsTable('all');
+    if (typeof initDashboard === 'function' && document.getElementById('p-dashboard')?.style.display !== 'none') initDashboard();
 });

@@ -97,7 +97,52 @@
         <!-- ================= OTHER ADMIN PAGES ================= -->
         <div class="page" style="display:none" id="p-classes"><div class="ph"><div><h1>🏫 الصفوف الدراسية</h1><p>إدارة الصفوف وربطها بالمواد</p></div><button class="btn btn-primary" onclick="openM('mClass')">+ إضافة صف</button></div><div class="card"><div class="tw"><table><thead><tr><th>اسم الصف</th><th>المرحلة</th><th>المواد</th><th>الطلاب</th><th>الإيراد</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody><tr><td><strong>الصف السادس العلمي</strong></td><td><span class="chip chip-brand">متوسطة</span></td><td>8 مواد</td><td>347</td><td style="color:var(--p500);font-weight:700">6.2M</td><td><label class="tog"><input type="checkbox" checked><span class="tog-sl"></span></label></td><td><button class="ico-btn">✏️</button> <button class="ico-btn">🗑️</button></td></tr></tbody></table></div></div></div>
         <div class="page" style="display:none" id="p-subjects"><div class="ph"><div><h1>📚 المواد الدراسية</h1><p>ربط المواد بالصفوف والمدرسين</p></div><button class="btn btn-primary" onclick="openM('mSubject')">+ إضافة مادة</button></div><div class="card"><div class="tw"><table><thead><tr><th>المادة</th><th>الصف</th><th>المدرسون</th><th>الفيديوهات</th><th>المشتركون</th><th>التقييم</th><th>إجراءات</th></tr></thead><tbody><tr><td><div style="display:flex;align-items:center;gap:9px">📐<div><strong>الرياضيات</strong></div></div></td><td>السادس العلمي</td><td>3</td><td>48</td><td><span class="chip chip-green">312</span></td><td>★ 4.9</td><td><button class="ico-btn">✏️</button> <button class="ico-btn">🗑️</button></td></tr></tbody></table></div></div></div>
-        <div class="page" style="display:none" id="p-teachers"><div class="ph"><div><h1>👨‍🏫 المدرسون</h1><p>إدارة فريق التدريس وربطهم بالمواد</p></div><button class="btn btn-primary" onclick="openM('mTeacher')">+ إضافة مدرس</button></div><div class="tch-g"><div class="tch-card"><div class="tch-av">👨‍🏫</div><div class="tch-name">أ. محمد الجابري</div><div class="tch-meta">الرياضيات — السادس العلمي</div><div class="tch-chips"><span class="chip chip-dark">48 فيديو</span><span class="chip chip-green">312 طالب</span></div><div class="tch-acts"><button class="btn btn-ghost btn-sm">تعديل</button><button class="btn btn-danger btn-sm">حذف</button></div></div><div class="tch-card"><div class="tch-av">👩‍🏫</div><div class="tch-name">أ. سارة العمر</div><div class="tch-meta">الفيزياء — السادس العلمي</div><div class="tch-chips"><span class="chip chip-dark">36 فيديو</span><span class="chip chip-green">198 طالب</span></div><div class="tch-acts"><button class="btn btn-ghost btn-sm">تعديل</button><button class="btn btn-danger btn-sm">حذف</button></div></div></div></div>
+        <div class="page" style="display:none" id="p-teachers">
+            <div class="ph">
+                <div>
+                    <h1>👨‍🏫 المدرسون</h1>
+                    <p>إدارة فريق التدريس وربطهم بالمواد</p>
+                </div>
+                <div class="ph-actions">
+                    <div class="nav-mode" style="margin-left: 8px;">
+                        <button class="nm on" onclick="switchTeacherTab('profiles', this)">البروفايلات</button>
+                        <button class="nm" onclick="switchTeacherTab('features', this)">المميزات</button>
+                        <button class="nm" onclick="switchTeacherTab('reports', this)">البلاغات</button>
+                        <button class="nm" onclick="switchTeacherTab('reviews', this)">التقييمات</button>
+                    </div>
+                    <button class="btn btn-primary" onclick="openTeacherModal()">+ إضافة مدرس</button>
+                </div>
+            </div>
+
+            <!-- Profiles Grid -->
+            <div id="t-tab-profiles" class="t-tab">
+                <div class="tch-g"></div>
+            </div>
+
+            <!-- Features Table -->
+            <div id="t-tab-features" class="t-tab" style="display:none">
+                <div class="card">
+                    <div class="card-hd"><div class="card-title">مميزات المدرسين</div><button class="btn btn-primary btn-xs" onclick="openM('mFeature')">+ ميزة جديدة</button></div>
+                    <div class="tw"><table><thead><tr><th>الميزة</th><th>الأيقونة</th><th>اللون</th><th>إجراءات</th></tr></thead><tbody id="featuresTableBody"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Reports Table -->
+            <div id="t-tab-reports" class="t-tab" style="display:none">
+                <div class="card">
+                    <div class="card-hd"><div class="card-title">بلاغات الطلاب</div></div>
+                    <div class="tw"><table><thead><tr><th>المدرس</th><th>الطالب</th><th>السبب</th><th>التاريخ</th><th>إجراءات</th></tr></thead><tbody id="reportsTableBody"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Reviews Table -->
+            <div id="t-tab-reviews" class="t-tab" style="display:none">
+                <div class="card">
+                    <div class="card-hd"><div class="card-title">تقييمات ومراجعات المدرسين</div></div>
+                    <div class="tw"><table><thead><tr><th>المدرس</th><th>الطالب</th><th>التقييم</th><th>التعليق</th><th>التاريخ</th></tr></thead><tbody id="reviewsTableBody"></tbody></table></div>
+                </div>
+            </div>
+        </div>
         <div class="page" style="display:none" id="p-videos"><div class="ph"><div><h1>🎬 الفيديوهات التعليمية</h1><p>رفع وإدارة المحتوى — محمي من التحميل</p></div><button class="btn btn-primary" onclick="openM('mVideo')">+ رفع فيديو</button></div><div class="card"><div class="tw"><table><thead><tr><th>الفيديو</th><th>المادة</th><th>المدرس</th><th>المدة</th><th>المشاهدات</th><th>التقييم</th><th>الحماية</th><th>إجراءات</th></tr></thead><tbody><tr><td><div style="display:flex;align-items:center;gap:10px"><div class="v-thumb">▶</div><div><div style="font-weight:700">المعادلات التفاضلية</div></div></div></td><td>الرياضيات</td><td>أ. محمد</td><td>45 د</td><td>1,247</td><td>★ 4.9</td><td><span class="chip chip-dark">🔒 بث فقط</span></td><td><button class="ico-btn">✏️</button> <button class="ico-btn">🗑️</button></td></tr></tbody></table></div></div></div>
         <div class="page" style="display:none" id="p-subscriptions"><div class="ph"><div><h1>💳 الاشتراكات</h1><p>إدارة خطط الاشتراك والمشتركين</p></div><button class="btn btn-primary" onclick="openM('mPlan')">+ خطة جديدة</button></div><div class="plan-g"><div class="plan-card pop"><div class="plan-price">250,000 <small>دينار/سنة</small></div><div class="plan-feat">الوصول الكامل لمادة واحدة</div><div class="plan-feat">جميع فيديوهات المادة</div><div style="display:flex;gap:6px;margin-top:14px"><span class="chip chip-green">● نشط</span><span class="chip chip-brand">847 مشترك</span></div></div></div><div class="card"><div class="card-hd"><div class="card-title">اشتراكات الطلاب الأخيرة</div></div><div class="tw"><table><thead><tr><th>الطالب</th><th>الصف</th><th>نوع الاشتراك</th><th>تاريخ البدء</th><th>الانتهاء</th><th>القيمة</th><th>الحالة</th></tr></thead><tbody><tr><td><div class="u-row"><div class="u-av">أ</div><div><div class="u-name">أحمد محمد</div></div></div></td><td>السادس</td><td><span class="chip chip-brand">رياضيات</span></td><td>1/3/2026</td><td>1/4/2026</td><td>250,000</td><td><span class="chip chip-green">● نشط</span></td></tr></tbody></table></div></div></div>
 
@@ -126,12 +171,102 @@
     </main>
 </div>
 
+<!-- Modals -->
+<div class="mbd hidden" id="mTeacher">
+    <div class="modal">
+        <div class="modal-hd">
+            <div class="modal-hd-ico">👨‍🏫</div>
+            <div>
+                <div class="modal-title">بيانات المدرس</div>
+                <div class="modal-subtitle">إدارة معلومات البروفايل والتخصص</div>
+            </div>
+            <button class="modal-x" onclick="closeM('mTeacher')">×</button>
+        </div>
+        <form id="fTeacher" onsubmit="handleTeacherSubmit(event)">
+            <input type="hidden" id="tId">
+            <input type="hidden" id="tAttachmentId">
+            <div class="fgrid">
+                <div class="fg fg-full">
+                    <label class="flabel">صورة المدرس</label>
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <div id="tPreview" class="tch-av" style="margin:0; width:80px; height:80px; cursor:pointer; overflow:hidden;" onclick="document.getElementById('tFile').click()">
+                            <span id="tPreviewIco">📷</span>
+                        </div>
+                        <input type="file" id="tFile" hidden accept="image/*" onchange="handleTeacherFileSelect(this)">
+                        <div style="font-size:12px; color:var(--ink4)">اضغط على الدائرة لرفع صورة (PNG, JPG)</div>
+                    </div>
+                </div>
+                <div class="fg">
+                    <label class="flabel" for="tName">الاسم الكامل</label>
+                    <input class="finp" id="tName" required>
+                </div>
+                <div class="fg">
+                    <label class="flabel" for="tSpec">التخصص</label>
+                    <input class="finp" id="tSpec" required>
+                </div>
+                <div class="fg">
+                    <label class="flabel" for="tUserId">معرف المستخدم (UserId)</label>
+                    <input class="finp" id="tUserId" type="number" required>
+                </div>
+                <div class="fg">
+                    <label class="flabel" for="tColor">اللون التعريفي</label>
+                    <input class="finp" id="tColor" type="color" value="#4DA8DA" style="height:44px; padding:4px;">
+                </div>
+                <div class="fg fg-full">
+                    <label class="flabel" for="tBio">السيرة الذاتية (Bio)</label>
+                    <textarea class="finp" id="tBio" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button type="button" class="btn btn-ghost" onclick="closeM('mTeacher')">إلغاء</button>
+                <button type="submit" class="btn btn-primary" id="tSubmitBtn">حفظ البيانات</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mbd hidden" id="mFeature">
+    <div class="modal">
+        <div class="modal-hd">
+            <div class="modal-hd-ico">✨</div>
+            <div>
+                <div class="modal-title">ميزة مدرس</div>
+                <div class="modal-subtitle">إضافة ميزة تظهر في بروفايل المدرسين</div>
+            </div>
+            <button class="modal-x" onclick="closeM('mFeature')">×</button>
+        </div>
+        <form onsubmit="handleFeatureSubmit(event)">
+            <input type="hidden" id="fId">
+            <div class="fgrid">
+                <div class="fg fg-full">
+                    <label class="flabel">اسم الميزة</label>
+                    <input class="finp" id="fName" required>
+                </div>
+                <div class="fg">
+                    <label class="flabel">الأيقونة (Emoji)</label>
+                    <input class="finp" id="fIcon" placeholder="⭐">
+                </div>
+                <div class="fg">
+                    <label class="flabel">اللون</label>
+                    <input class="finp" id="fColor" type="color" value="#7ACFB0" style="height:44px; padding:4px;">
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button type="button" class="btn btn-ghost" onclick="closeM('mFeature')">إلغاء</button>
+                <button type="submit" class="btn btn-primary">حفظ الميزة</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div id="toastBox"></div>
 
 <!-- Custom Scripts (Modular) -->
 <script src="js/i18n.js"></script>
 <script src="js/api.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/teachers.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/codes.js"></script>
 <script src="js/requests.js"></script>

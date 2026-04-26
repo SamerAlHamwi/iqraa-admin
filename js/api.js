@@ -13,17 +13,56 @@ const API_CONFIG = {
 };
 
 /**
+ * Enums (Matching ReadIraq Backend)
+ */
+const Enums = {
+    AttachmentRefType: {
+        Profile: 1,
+        Advertisiment: 2,
+        Subject: 3,
+        LessonSessionThumbnail: 4,
+        LessonSessionVideo: 5,
+        TeacherProfile: 6,
+        LessonSessionOther: 7,
+        Other: 8,
+        Question: 9
+    },
+    AttachmentType: {
+        PDF: 1,
+        WORD: 2,
+        JPEG: 3,
+        PNG: 4,
+        JPG: 5,
+        MP4: 6,
+        MP3: 7,
+        APK: 8
+    }
+};
+
+/**
  * Core API Client
  */
 const apiClient = {
     async request(endpoint, options = {}) {
-        const url = `${API_CONFIG.BASE_URL}${endpoint}`;
+        let url = `${API_CONFIG.BASE_URL}${endpoint}`;
+
+        // Handle query parameters
+        if (options.params) {
+            const params = new URLSearchParams(options.params).toString();
+            url += (url.includes('?') ? '&' : '?') + params;
+        }
+
         const token = localStorage.getItem('auth_token');
 
         const headers = {
             ...API_CONFIG.HEADERS,
             ...options.headers
         };
+
+        // Don't set Content-Type for FormData (browser will set it with boundary)
+        if (options.body instanceof FormData) {
+            delete headers['Content-Type'];
+        }
 
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
@@ -40,9 +79,12 @@ const apiClient = {
 
             // ABP often returns results wrapped in a "result" object
             try {
-                data = await response.json();
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    data = await response.json();
+                }
             } catch (e) {
-                console.warn('Response is not JSON');
+                console.warn('Response parsing failed');
             }
 
             if (!response.ok) {
@@ -65,11 +107,21 @@ const apiClient = {
     },
 
     post(endpoint, body, options = {}) {
-        return this.request(endpoint, { ...options, method: 'POST', body: JSON.stringify(body) });
+        const isFormData = body instanceof FormData;
+        return this.request(endpoint, {
+            ...options,
+            method: 'POST',
+            body: isFormData ? body : JSON.stringify(body)
+        });
     },
 
     put(endpoint, body, options = {}) {
-        return this.request(endpoint, { ...options, method: 'PUT', body: JSON.stringify(body) });
+        const isFormData = body instanceof FormData;
+        return this.request(endpoint, {
+            ...options,
+            method: 'PUT',
+            body: isFormData ? body : JSON.stringify(body)
+        });
     },
 
     delete(endpoint, options = {}) {
@@ -104,6 +156,37 @@ const AppAPI = {
             window.location.href = 'login.html';
         }
     },
+    attachments: {
+        upload: (file, refType, description = "") => {
+            const formData = new FormData();
+            formData.append('File', file);
+            formData.append('RefType', refType);
+            formData.append('Description', description);
+            return apiClient.post('/services/app/Attachment/Upload', formData);
+        }
+    },
+    teachers: {
+        // Profiles
+        getAll: (params) => apiClient.get('/services/app/TeacherProfile/GetAll', { params }),
+        get: (id) => apiClient.get('/services/app/TeacherProfile/Get', { params: { id } }),
+        create: (data) => apiClient.post('/services/app/TeacherProfile/Create', data),
+        update: (data) => apiClient.put('/services/app/TeacherProfile/Update', data),
+        delete: (id) => apiClient.delete('/services/app/TeacherProfile/Delete', { params: { id } }),
+        assignSubjects: (data) => apiClient.post('/services/app/TeacherProfile/AssignSubjects', data),
+        getStats: (id) => apiClient.get('/services/app/TeacherProfile/GetStats', { params: { id } }),
+        toggleActive: (id) => apiClient.post('/services/app/TeacherProfile/ToggleActive', { id }),
+
+        // Features
+        getFeatures: (params) => apiClient.get('/services/app/TeacherFeature/GetAll', { params }),
+        createFeature: (data) => apiClient.post('/services/app/TeacherFeature/Create', data),
+        updateFeature: (data) => apiClient.put('/services/app/TeacherFeature/Update', data),
+        deleteFeature: (id) => apiClient.delete('/services/app/TeacherFeature/Delete', { params: { id } }),
+
+        // Reports & Reviews
+        getReports: (params) => apiClient.get('/services/app/TeacherReport/GetAll', { params }),
+        deleteReport: (id) => apiClient.delete('/services/app/TeacherReport/Delete', { params: { id } }),
+        getReviews: (params) => apiClient.get('/services/app/TeacherReview/GetAll', { params })
+    },
     dashboard: {
         getStats: () => apiClient.get('/admin/stats'),
         getChartData: () => apiClient.get('/admin/charts/revenue')
@@ -122,6 +205,9 @@ const AppAPI = {
     },
     users: {
         getStudents: () => apiClient.get('/admin/students'),
-        getParents: () => apiClient.get('/admin/parents')
+        getParents: () => apiClient.get('/admin/parents'),
+        getStatisticalNumbers: (year) => apiClient.get('/services/app/User/GetStatisticalNumbers', {
+            params: year ? { year } : {}
+        })
     }
 };

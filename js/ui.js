@@ -20,13 +20,16 @@ function showP(id, btn) {
 
     // Page specific initializers
     if (id === 'dashboard') {
-        if (typeof initDashboardChart === 'function') initDashboardChart();
+        if (typeof initDashboard === 'function') initDashboard();
     }
     if (id === 'codes') {
         if (typeof renderCodesTable === 'function') renderCodesTable();
     }
     if (id === 'code-requests') {
         if (typeof renderReqsTable === 'function') renderReqsTable('all');
+    }
+    if (id === 'teachers') {
+        if (typeof initTeachersPage === 'function') initTeachersPage();
     }
 }
 
