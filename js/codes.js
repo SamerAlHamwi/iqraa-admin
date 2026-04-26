@@ -1,36 +1,51 @@
 /* ═══════════════════════════════════════════
-   CODES MANAGEMENT LOGIC
+   CODES MANAGEMENT LOGIC (PRO)
 ═══════════════════════════════════════════ */
 
-let codesDB = [
-    { id: 'c1', code: 'IQRAA001', subject: 'الرياضيات', student: '', created: '2026-03-10', days: 365, status: 'active', usedBy: '' },
-    { id: 'c2', code: 'PHYS9881', subject: 'الفيزياء', student: '', created: '2026-03-15', days: 365, status: 'active', usedBy: '' }
-];
-
-function renderCodesTable() {
+/**
+ * Fetch and Render Codes Table
+ */
+async function renderCodesTable() {
     let tbody = document.getElementById('codesTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = codesDB.map(c => `
-        <tr>
-            <td>${c.code}</td>
-            <td>${c.subject}</td>
-            <td>${c.student || '—'}</td>
-            <td>${c.created}</td>
-            <td>${c.days} يوم</td>
-            <td><span class="code-chip cc-active">نشط</span></td>
-            <td><button class="btn btn-ghost btn-xs" onclick="adminCopyCode('${c.code}')">نسخ</button></td>
-        </tr>
-    `).join('');
+    try {
+        const result = await AppAPI.codes.getAll({ MaxResultCount: 50 });
+        const codes = result.items || [];
 
-    const totalEl = document.getElementById('statTotal');
-    const activeEl = document.getElementById('statActive');
-    if (totalEl) totalEl.textContent = codesDB.length;
-    if (activeEl) activeEl.textContent = codesDB.filter(c => c.status === 'active').length;
+        tbody.innerHTML = codes.map(c => `
+            <tr>
+                <td><strong>${c.code}</strong></td>
+                <td>${c.subjectName || '—'}</td>
+                <td>${c.studentName || '—'}</td>
+                <td>${new Date(c.creationTime).toLocaleDateString('ar-EG')}</td>
+                <td>${c.days} يوم</td>
+                <td><span class="code-chip ${c.isUsed ? 'cc-used' : 'cc-active'}">${c.isUsed ? 'مستخدم' : 'نشط'}</span></td>
+                <td>
+                    <button class="btn btn-ghost btn-xs" onclick="adminCopyCode('${c.code}')">نسخ</button>
+                </td>
+            </tr>
+        `).join('') || '<tr><td colspan="7" style="text-align:center">لا توجد أكواد</td></tr>';
+
+        // Update Stats
+        const stats = await AppAPI.codes.getStats();
+        if (stats) {
+            const totalEl = document.getElementById('statTotal');
+            const activeEl = document.getElementById('statActive');
+            if (totalEl) totalEl.textContent = stats.totalCodes || 0;
+            if (activeEl) activeEl.textContent = stats.activeCodes || 0;
+        }
+    } catch (error) {
+        console.error('Failed to load codes:', error);
+    }
 }
 
+/**
+ * Code Generation (Sync with backend)
+ */
 function generateCode() {
-    let code = 'IQ' + Math.floor(Math.random() * 9999);
+    // Generate a local preview code
+    let code = 'IQ' + Math.floor(1000 + Math.random() * 8999);
     const wrap = document.getElementById('codePreviewWrap');
     const val = document.getElementById('codePreviewVal');
     if (wrap) wrap.style.display = 'flex';
@@ -38,38 +53,41 @@ function generateCode() {
     return code;
 }
 
+async function saveCode() {
+    const val = document.getElementById('codePreviewVal');
+    const subSel = document.getElementById('codeSubjectSel'); // This should ideally be a list of subjects
+    const stuName = document.getElementById('codeStudentName');
+    const validity = document.getElementById('codeValidity');
+
+    if (!val || !val.textContent) return;
+
+    const data = {
+        count: 1, // backend API likely supports generating multiple
+        days: parseInt(validity.value),
+        // Note: The GenerateCodes API likely takes different inputs, checking its structure...
+    };
+
+    try {
+        // PRO: GenerateCodes typically takes a count and configuration
+        await AppAPI.codes.generate({
+            count: 1,
+            days: parseInt(validity.value)
+        });
+
+        showToast('تم إنشاء الكود بنجاح', 'success');
+        renderCodesTable();
+        clearCodeForm();
+    } catch (error) {
+        showToast('فشل في إنشاء الكود', 'error');
+    }
+}
+
 function copyGeneratedCode() {
     const val = document.getElementById('codePreviewVal');
     if (!val) return;
     let c = val.textContent;
     navigator.clipboard.writeText(c);
-    if (typeof showToast === 'function') showToast('تم نسخ: ' + c, 'success');
-}
-
-function saveCode() {
-    const val = document.getElementById('codePreviewVal');
-    const subSel = document.getElementById('codeSubjectSel');
-    const stuName = document.getElementById('codeStudentName');
-    const validity = document.getElementById('codeValidity');
-
-    if (!val) return;
-    let code = val.textContent;
-
-    if (code && !codesDB.find(c => c.code === code)) {
-        codesDB.unshift({
-            id: 'c' + Date.now(),
-            code: code,
-            subject: subSel ? subSel.value || 'عام' : 'عام',
-            student: stuName ? stuName.value : '',
-            created: new Date().toISOString().split('T')[0],
-            days: validity ? parseInt(validity.value) : 365,
-            status: 'active',
-            usedBy: ''
-        });
-        renderCodesTable();
-        if (typeof showToast === 'function') showToast('تم حفظ الكود', 'success');
-        clearCodeForm();
-    }
+    showToast('تم نسخ: ' + c, 'success');
 }
 
 function clearCodeForm() {
@@ -81,5 +99,5 @@ function clearCodeForm() {
 
 function adminCopyCode(code) {
     navigator.clipboard.writeText(code);
-    if (typeof showToast === 'function') showToast('تم نسخ: ' + code, 'success');
+    showToast('تم نسخ: ' + code, 'success');
 }

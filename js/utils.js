@@ -15,4 +15,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof renderCodesTable === 'function' && document.getElementById('p-codes')?.style.display !== 'none') renderCodesTable();
     if (typeof renderReqsTable === 'function' && document.getElementById('p-code-requests')?.style.display !== 'none') renderReqsTable('all');
     if (typeof initDashboard === 'function' && document.getElementById('p-dashboard')?.style.display !== 'none') initDashboard();
+    if (typeof initGradesPage === 'function' && document.getElementById('p-classes')?.style.display !== 'none') initGradesPage();
 });

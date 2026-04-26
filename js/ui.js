@@ -26,10 +26,28 @@ function showP(id, btn) {
         if (typeof renderCodesTable === 'function') renderCodesTable();
     }
     if (id === 'code-requests') {
-        if (typeof renderReqsTable === 'function') renderReqsTable('all');
+        if (typeof renderReqsTable === 'function') renderReqsTable();
     }
     if (id === 'teachers') {
         if (typeof initTeachersPage === 'function') initTeachersPage();
+    }
+    if (id === 'classes') {
+        if (typeof initGradesPage === 'function') initGradesPage();
+    }
+    if (id === 'subjects') {
+        if (typeof initSubjectsPage === 'function') initSubjectsPage();
+    }
+    if (id === 'videos') {
+        if (typeof initVideosPage === 'function') initVideosPage();
+    }
+    if (id === 'subscriptions') {
+        if (typeof initSubscriptionsPage === 'function') initSubscriptionsPage();
+    }
+    if (id === 'users') {
+        if (typeof initStudentsPage === 'function') initStudentsPage();
+    }
+    if (id === 'parents') {
+        if (typeof initParentsPage === 'function') initParentsPage();
     }
 }
 

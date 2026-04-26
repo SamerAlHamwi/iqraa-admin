@@ -192,20 +192,45 @@ const AppAPI = {
         getChartData: () => apiClient.get('/admin/charts/revenue')
     },
     content: {
-        getClasses: () => apiClient.get('/admin/classes'),
-        addClass: (data) => apiClient.post('/admin/classes', data),
-        getSubjects: () => apiClient.get('/admin/subjects'),
-        getTeachers: () => apiClient.get('/admin/teachers'),
-        getVideos: () => apiClient.get('/admin/videos')
+        // Grade Groups (Educational Stages)
+        getGradeGroups: (params) => apiClient.get('/services/app/GradeGroup/GetAll', { params }),
+        createGradeGroup: (data) => apiClient.post('/services/app/GradeGroup/Create', data),
+        updateGradeGroup: (data) => apiClient.put('/services/app/GradeGroup/Update', data),
+        deleteGradeGroup: (id) => apiClient.delete('/services/app/GradeGroup/Delete', { params: { id } }),
+
+        // Grades (Classrooms)
+        getGrades: (params) => apiClient.get('/services/app/Grade/GetAll', { params }),
+        createGrade: (data) => apiClient.post('/services/app/Grade/Create', data),
+        updateGrade: (data) => apiClient.put('/services/app/Grade/Update', data),
+        deleteGrade: (id) => apiClient.delete('/services/app/Grade/Delete', { params: { id } }),
+
+        // Subjects
+        getSubjects: (params) => apiClient.get('/services/app/Subject/GetAll', { params }),
+        getSubject: (id) => apiClient.get('/services/app/Subject/Get', { params: { id } }),
+        createSubject: (data) => apiClient.post('/services/app/Subject/Create', data),
+        updateSubject: (data) => apiClient.put('/services/app/Subject/Update', data),
+        deleteSubject: (id) => apiClient.delete('/services/app/Subject/Delete', { params: { id } }),
+        toggleSubjectActive: (id) => apiClient.post('/services/app/Subject/ToggleActive', { id }),
+
+        // Videos (Lesson Sessions)
+        getVideos: (params) => apiClient.get('/services/app/LessonSession/GetAll', { params }),
+        getVideo: (id) => apiClient.get('/services/app/LessonSession/Get', { params: { id } }),
+        createVideo: (data) => apiClient.post('/services/app/LessonSession/Create', data),
+        updateVideo: (data) => apiClient.put('/services/app/LessonSession/Update', data),
+        deleteVideo: (id) => apiClient.delete('/services/app/LessonSession/Delete', { params: { id } })
     },
     codes: {
-        getAll: () => apiClient.get('/admin/codes'),
-        create: (data) => apiClient.post('/admin/codes', data),
-        getRequests: () => apiClient.get('/admin/code-requests')
+        getAll: (params) => apiClient.get('/services/app/ActivationCode/GetAll', { params }),
+        generate: (data) => apiClient.post('/services/app/ActivationCode/GenerateCodes', data),
+        getStats: () => apiClient.get('/services/app/ActivationCode/GetStatistics'),
+
+        // Code Requests
+        getRequests: (params) => apiClient.get('/services/app/ActivationCode/GetAllActivationCodeRequests', { params }),
+        deleteRequest: (id) => apiClient.delete('/services/app/ActivationCode/DeleteActivationCodeRequest', { params: { id } })
     },
     users: {
-        getStudents: () => apiClient.get('/admin/students'),
-        getParents: () => apiClient.get('/admin/parents'),
+        getStudents: (params) => apiClient.get('/services/app/User/GetAll', { params }),
+        getParents: (params) => apiClient.get('/services/app/Parent/GetAll', { params }),
         getStatisticalNumbers: (year) => apiClient.get('/services/app/User/GetStatisticalNumbers', {
             params: year ? { year } : {}
         })

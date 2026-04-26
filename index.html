@@ -94,8 +94,61 @@
             <div class="card"><div class="card-hd"><div class="card-title">آخر النشاطات</div><span class="chip chip-green">مباشر</span></div><div style="padding:4px 0"><div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border)"><div style="width:36px;height:36px;border-radius:50%;background:var(--p50);display:flex;align-items:center;justify-content:center;font-size:16px">📚</div><div style="flex:1"><div style="font-size:13px;font-weight:600">فيديو جديد: "قوانين نيوتن"</div><div style="font-size:11px;color:var(--ink4)">أ. سارة العمر • منذ 12 دقيقة</div></div><span class="chip chip-brand">فيزياء</span></div></div></div>
         </div>
 
-        <!-- ================= OTHER ADMIN PAGES ================= -->
-        <div class="page" style="display:none" id="p-classes"><div class="ph"><div><h1>🏫 الصفوف الدراسية</h1><p>إدارة الصفوف وربطها بالمواد</p></div><button class="btn btn-primary" onclick="openM('mClass')">+ إضافة صف</button></div><div class="card"><div class="tw"><table><thead><tr><th>اسم الصف</th><th>المرحلة</th><th>المواد</th><th>الطلاب</th><th>الإيراد</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody><tr><td><strong>الصف السادس العلمي</strong></td><td><span class="chip chip-brand">متوسطة</span></td><td>8 مواد</td><td>347</td><td style="color:var(--p500);font-weight:700">6.2M</td><td><label class="tog"><input type="checkbox" checked><span class="tog-sl"></span></label></td><td><button class="ico-btn">✏️</button> <button class="ico-btn">🗑️</button></td></tr></tbody></table></div></div></div>
+        <!-- ================= CLASSES & STAGES ================= -->
+        <div class="page" style="display:none" id="p-classes">
+            <div class="ph">
+                <div>
+                    <h1 data-t="nav_classes">الصفوف الدراسية</h1>
+                    <p>إدارة المراحل التعليمية والصفوف الدراسية</p>
+                </div>
+                <div class="ph-actions">
+                    <div class="nav-mode" style="margin-left: 8px;">
+                        <button class="nm on" onclick="switchGradeTab('groups', this)" data-t="nav_grade_groups">المراحل التعليمية</button>
+                        <button class="nm" onclick="switchGradeTab('grades', this)" data-t="nav_grades">الصفوف</button>
+                    </div>
+                    <button class="btn btn-primary" id="btnAddNewGrade" onclick="openGradeModal()">+ <span data-t="add_new">إضافة جديد</span></button>
+                </div>
+            </div>
+
+            <!-- Grade Groups (Stages) -->
+            <div id="g-tab-groups" class="g-tab">
+                <div class="card">
+                    <div class="tw">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>المرحلة (AR)</th>
+                                    <th>Stage (EN)</th>
+                                    <th>الأولوية</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gradeGroupsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grades -->
+            <div id="g-tab-grades" class="g-tab" style="display:none">
+                <div class="card">
+                    <div class="tw">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الصف (AR)</th>
+                                    <th>Grade (EN)</th>
+                                    <th>المرحلة</th>
+                                    <th>الأولوية</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gradesTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="page" style="display:none" id="p-subjects"><div class="ph"><div><h1>📚 المواد الدراسية</h1><p>ربط المواد بالصفوف والمدرسين</p></div><button class="btn btn-primary" onclick="openM('mSubject')">+ إضافة مادة</button></div><div class="card"><div class="tw"><table><thead><tr><th>المادة</th><th>الصف</th><th>المدرسون</th><th>الفيديوهات</th><th>المشتركون</th><th>التقييم</th><th>إجراءات</th></tr></thead><tbody><tr><td><div style="display:flex;align-items:center;gap:9px">📐<div><strong>الرياضيات</strong></div></div></td><td>السادس العلمي</td><td>3</td><td>48</td><td><span class="chip chip-green">312</span></td><td>★ 4.9</td><td><button class="ico-btn">✏️</button> <button class="ico-btn">🗑️</button></td></tr></tbody></table></div></div></div>
         <div class="page" style="display:none" id="p-teachers">
             <div class="ph">
@@ -259,6 +312,82 @@
     </div>
 </div>
 
+<div class="mbd hidden" id="mGradeGroup">
+    <div class="modal">
+        <div class="modal-hd">
+            <div class="modal-hd-ico">🏫</div>
+            <div>
+                <div class="modal-title">المرحلة التعليمية</div>
+                <div class="modal-subtitle">إضافة أو تعديل مرحلة تعليمية</div>
+            </div>
+            <button class="modal-x" onclick="closeM('mGradeGroup')">×</button>
+        </div>
+        <form id="fGradeGroup" onsubmit="handleGradeGroupSubmit(event)">
+            <input type="hidden" id="ggId">
+            <div class="fgrid">
+                <div class="fg">
+                    <label class="flabel">الاسم (عربي)</label>
+                    <input class="finp" id="ggNameAr" required>
+                </div>
+                <div class="fg">
+                    <label class="flabel">Name (English)</label>
+                    <input class="finp" id="ggNameEn" required>
+                </div>
+                <div class="fg fg-full">
+                    <label class="flabel">الأولوية</label>
+                    <input class="finp" id="ggPriority" type="number" value="0" required>
+                </div>
+                <div class="fg fg-full">
+                    <label class="flabel">الوصف</label>
+                    <textarea class="finp" id="ggDescription" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button type="button" class="btn btn-ghost" onclick="closeM('mGradeGroup')">إلغاء</button>
+                <button type="submit" class="btn btn-primary">حفظ</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mbd hidden" id="mGrade">
+    <div class="modal">
+        <div class="modal-hd">
+            <div class="modal-hd-ico">📖</div>
+            <div>
+                <div class="modal-title">الصف الدراسي</div>
+                <div class="modal-subtitle">إضافة أو تعديل صف دراسي</div>
+            </div>
+            <button class="modal-x" onclick="closeM('mGrade')">×</button>
+        </div>
+        <form id="fGrade" onsubmit="handleGradeSubmit(event)">
+            <input type="hidden" id="gId">
+            <div class="fgrid">
+                <div class="fg">
+                    <label class="flabel">الاسم (عربي)</label>
+                    <input class="finp" id="gNameAr" required>
+                </div>
+                <div class="fg">
+                    <label class="flabel">Name (English)</label>
+                    <input class="finp" id="gNameEn" required>
+                </div>
+                <div class="fg">
+                    <label class="flabel">المرحلة</label>
+                    <select class="finp" id="gGroupId" required></select>
+                </div>
+                <div class="fg">
+                    <label class="flabel">الأولوية</label>
+                    <input class="finp" id="gPriority" type="number" value="0" required>
+                </div>
+            </div>
+            <div class="modal-ft">
+                <button type="button" class="btn btn-ghost" onclick="closeM('mGrade')">إلغاء</button>
+                <button type="submit" class="btn btn-primary">حفظ</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div id="toastBox"></div>
 
 <!-- Custom Scripts (Modular) -->
@@ -267,9 +396,15 @@
 <script src="js/ui.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/teachers.js"></script>
-<script src="js/dashboard.js"></script>
+<script src="js/grades.js"></script>
+<script src="js/subjects.js"></script>
+<script src="js/videos.js"></script>
+<script src="js/subscriptions.js"></script>
+<script src="js/students.js"></script>
+<script src="js/parents.js"></script>
 <script src="js/codes.js"></script>
 <script src="js/requests.js"></script>
+<script src="js/extra_sections.js"></script>
 <script src="js/utils.js"></script>
 </body>
 </html>
