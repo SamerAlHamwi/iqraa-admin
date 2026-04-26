@@ -1,0 +1,77 @@
+/* ═══════════════════════════════════════════
+   TOKENS & THEMES
+═══════════════════════════════════════════ */
+:root {
+  --p900:#0A2A40; --p800:#0F3D5C; --p700:#155278;
+  --p600:#1A6899; --p500:#2288C0; --p400:#4DA8DA;
+  --p300:#7DC3E8; --p200:#AADAF2; --p100:#D4EEF9; --p50:#EAF6FD;
+  --s600:#4EB890; --s500:#7ACFB0; --s400:#A8E6CF;
+  --s300:#C4EEE0; --s100:#E6F8F2; --s50:#F2FCF8;
+  --a600:#E87030; --a500:#FF914D; --a400:#FFB07C;
+  --a100:#FFE8D8; --a50:#FFF4ED;
+  --uni-900:#0A2A2E; --uni-700:#14525B; --uni-600:#1A6B76;
+  --uni-500:#218898; --uni-400:#2AAABF; --uni-300:#56C8DC;
+  --uni-200:#8DDDE8; --uni-100:#C2EFF5; --uni-50:#E6F8FB;
+  --ec-900:#1E1B4B; --ec-600:#4338CA; --ec-500:#6366F1;
+  --ec-300:#A5B4FC; --ec-100:#E0E7FF; --ec-50:#EEF2FF;
+  --sp-600:#3D2A80; --sp-500:#5B3FA6; --sp-400:#7B5DC8;
+  --sp-100:#E8E3FA; --sp-50:#F4F2FD;
+  --par-900:#1A1A3E; --par-700:#2D2D8C; --par-600:#3636A8;
+  --par-500:#5757D4; --par-300:#9090E8; --par-50:#F0F0FC;
+  --bg:#F2F7FB; --surface:#FFFFFF; --surface2:#F7FBFE;
+  --border:#D6E8F5; --border2:#BDD8EE;
+  --ink1:#1E1E1E; --ink2:#2E3A42; --ink3:#4A5E6A;
+  --ink4:#777777; --ink5:#A8C0D0;
+  --gold:#C07800; --gold-bg:#FEF3DC;
+  --red:#D13B3B;  --red-bg:#FEF0EE;
+  --amber:#C07800; --amber-bg:#FEF3DC;
+  --r4:4px; --r6:6px; --r8:8px; --r10:10px; --r12:12px;
+  --r14:14px; --r16:16px; --r20:20px; --r24:24px; --r32:32px;
+  --sh-xs:0 1px 3px rgba(77,168,218,.08);
+  --sh-sm:0 2px 8px rgba(77,168,218,.1);
+  --sh-md:0 6px 20px rgba(77,168,218,.12);
+  --sh-lg:0 12px 40px rgba(77,168,218,.15);
+  --sh-xl:0 24px 64px rgba(0,0,0,.14);
+  --t:.18s cubic-bezier(.4,0,.2,1);
+  --vh:1vh;
+  font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
+}
+
+[data-theme="dark"] {
+  --bg:#0E1B16; --surface:#172118; --surface2:#1E2C21;
+  --border:#253220; --border2:#2D3C26;
+  --ink1:#E8F2EC; --ink2:#BDD4C5; --ink3:#8DAD98; --ink4:#5A7A65; --ink5:#3A5244;
+  --p50:#0A2018; --p100:#0E3022;
+}
+
+[data-theme="dark"] .card,[data-theme="dark"] .kpi,[data-theme="dark"] .tch-card,
+[data-theme="dark"] .subj-card,[data-theme="dark"] .college-card,
+[data-theme="dark"] .auth-card,[data-theme="dark"] .sp-section,
+[data-theme="dark"] .modal { background:var(--surface)!important; }
+
+[data-theme="dark"] thead { background:#172118!important; }
+
+[data-theme="dark"] .finp,[data-theme="dark"] .ainp {
+  background:var(--surface);color:var(--ink1);border-color:var(--ink5);
+}
+
+*,*::before,*::after { box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent; }
+
+html,body {
+  height:100%; height:100dvh;
+  overflow:hidden; direction:rtl;
+  color:var(--ink1); background:var(--bg);
+  font-size:14px; line-height:1.55;
+  overscroll-behavior:none;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+
+button,input,select,textarea { font-family:inherit; }
+
+::-webkit-scrollbar { width:4px; height:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border2);border-radius:4px; }
+@media(max-width:768px){ ::-webkit-scrollbar{width:0;height:0;} }
+
+.hidden { display:none!important; }
