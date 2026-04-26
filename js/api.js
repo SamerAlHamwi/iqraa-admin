@@ -3,7 +3,7 @@
 ═══════════════════════════════════════════ */
 
 const API_CONFIG = {
-    BASE_URL: 'https://localhost:44311/api', // Pointing to ReadIraq backend
+    BASE_URL: 'https://iraq.autotap.site/api', // Pointing to ReadIraq backend
     TIMEOUT: 10000,
     HEADERS: {
         'Content-Type': 'application/json',
