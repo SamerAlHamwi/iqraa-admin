@@ -37,13 +37,16 @@
 <body>
 
 <div class="theme-toggle-auth">
-    <div class="nav-ico-btn" id="darkBtn" onclick="toggleDark()" style="background:var(--surface); border-color:var(--border); color:var(--ink2);">🌙</div>
+    <div class="nav-mode" style="display: inline-flex; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r10); padding: 3px; margin-left: 8px;">
+        <button class="nm" id="langAr" onclick="I18n.setLang('ar')">AR</button>
+        <button class="nm" id="langEn" onclick="I18n.setLang('en')">EN</button>
+    </div>
+    <div class="nav-ico-btn" id="darkBtn" onclick="toggleDark()" style="background:var(--surface); border-color:var(--border); color:var(--ink2); display: inline-flex;">🌙</div>
 </div>
 
 <div class="auth-wrapper">
     <div class="auth-card">
         <a href="#" class="auth-logo">
-            <div class="logo-mark">ا</div>
             <div style="text-align: center;">
                 <div class="logo-name" style="font-family:'Tajawal';font-weight:900;"><em>اق</em>رأ</div>
                 <div class="logo-en">IQRAA PLATFORM</div>
@@ -51,47 +54,45 @@
         </a>
 
         <div class="auth-hd">
-            <h1>لوحة الإدارة</h1>
-            <p>سجل دخولك للمتابعة إلى المنصة</p>
+            <h1 data-t="login_title">لوحة الإدارة</h1>
+            <p data-t="login_sub">سجل دخولك للمتابعة إلى المنصة</p>
         </div>
 
         <form class="auth-form" onsubmit="handleLogin(event)">
             <div class="auth-field">
-                <label for="loginUser">اسم المستخدم أو البريد الإلكتروني</label>
+                <label for="loginUser" data-t="login_user_label">اسم المستخدم أو البريد الإلكتروني</label>
                 <div class="auth-input-wrap">
                     <span class="auth-input-ico">👤</span>
-                    <input type="text" class="finp" id="loginUser" placeholder="admin" required>
+                    <input type="text" class="finp" id="loginUser" data-t="login_user_label" placeholder="admin" required>
                 </div>
             </div>
 
             <div class="auth-field">
-                <label for="loginPass">كلمة المرور</label>
+                <label for="loginPass" data-t="login_pass_label">كلمة المرور</label>
                 <div class="auth-input-wrap">
                     <span class="auth-input-ico">🔒</span>
-                    <input type="password" class="finp" id="loginPass" placeholder="••••••••" required>
+                    <input type="password" class="finp" id="loginPass" data-t="login_pass_label" placeholder="••••••••" required>
                 </div>
             </div>
 
             <div class="auth-extra">
                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
                     <input type="checkbox" style="width:16px;height:16px;accent-color:var(--p500)">
-                    تذكرني
+                    <span data-t="login_remember">تذكرني</span>
                 </label>
-                <a href="#" class="auth-forgot">نسيت كلمة المرور؟</a>
+                <a href="#" class="auth-forgot" data-t="login_forgot">نسيت كلمة المرور؟</a>
             </div>
 
-            <button type="submit" class="btn btn-primary auth-btn">دخول النظام</button>
+            <button type="submit" class="btn btn-primary auth-btn" data-t="login_btn">دخول النظام</button>
         </form>
-
-        <div class="auth-footer">
-            ليس لديك حساب؟ <a href="#">تواصل مع الدعم الفني</a>
-        </div>
     </div>
 </div>
 
 <div id="toastBox"></div>
 
 <!-- Shared UI Logic for Toasts/Theme -->
+<script src="js/i18n.js"></script>
+<script src="js/api.js"></script>
 <script src="js/ui.js"></script>
 <!-- Auth Logic -->
 <script src="js/auth.js"></script>

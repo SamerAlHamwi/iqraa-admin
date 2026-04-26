@@ -50,12 +50,18 @@ function closeM(id) {
     if (el) el.classList.add('hidden');
 }
 
-function showToast(msg, type) {
+function showToast(msgKey, type) {
     let box = document.getElementById('toastBox');
     if (!box) return;
     let t = document.createElement('div');
     t.className = 'toast toast-' + type;
-    t.innerHTML = '<span>✅</span><span>' + msg + '</span>';
+
+    // Check if msgKey is a translation key, otherwise use as literal
+    const message = (typeof I18n !== 'undefined' && translations[I18n.lang][msgKey])
+                    ? I18n.t(msgKey)
+                    : msgKey;
+
+    t.innerHTML = '<span>✅</span><span>' + message + '</span>';
     box.appendChild(t);
     setTimeout(() => {
         t.classList.add('hide');
@@ -74,11 +80,12 @@ function toggleDark() {
     const btn = document.getElementById('darkBtn');
     if (btn) btn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
 
-    showToast(newTheme === 'dark' ? 'وضع ليلي' : 'وضع نهاري', 'info');
+    showToast(newTheme === 'dark' ? 'toast_night_mode' : 'toast_day_mode', 'info');
 }
 
 function handleLogout() {
-    showToast('جاري تسجيل الخروج...', 'info');
+    showToast('toast_logout', 'info');
+    localStorage.removeItem('auth_token'); // PRO: Clear token
     setTimeout(() => {
         window.location.href = 'login.html';
     }, 800);

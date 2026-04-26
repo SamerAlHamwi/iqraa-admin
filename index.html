@@ -24,8 +24,12 @@
 <nav class="topnav">
     <button class="hamb" id="hambBtn" onclick="toggleSb()">☰</button>
     <a class="logo" href="#"><div class="logo-mark">ا</div><div><div class="logo-name"><em>اق</em>رأ</div><div class="logo-en">IQRAA PLATFORM</div></div></a>
-    <div class="nav-search"><span>🔍</span><input placeholder="ابحث عن مادة، مدرس، أو درس..."></div>
+    <div class="nav-search"><span>🔍</span><input data-t="search_placeholder" placeholder="ابحث عن مادة، مدرس، أو درس..."></div>
     <div class="nav-right">
+        <div class="nav-mode" style="margin-left: 8px;">
+            <button class="nm" id="langAr" onclick="I18n.setLang('ar')">AR</button>
+            <button class="nm" id="langEn" onclick="I18n.setLang('en')">EN</button>
+        </div>
         <div class="nav-ico-btn" id="darkBtn" onclick="toggleDark()">🌙</div>
         <div class="nav-ico-btn">🔔<span class="badge-dot"></span></div>
         <div class="nav-mode"><button class="nm on" id="nmAdmin">الإدارة</button></div>
@@ -33,14 +37,21 @@
     </div>
 </nav>
 
+<script>
+    // PRO: Protect route
+    if (!localStorage.getItem('auth_token')) {
+        window.location.href = 'login.html';
+    }
+</script>
+
 <!-- ADMIN SHELL -->
 <div class="shell" id="adminShell">
     <div class="sb-ov" id="sbOv" onclick="closeSb()"></div>
     <nav class="sidebar" id="sidebar">
-        <div class="sb-user"><div class="sb-user-av">م</div><div><div class="sb-user-name">مدير النظام</div><div class="sb-user-role">Administrator</div></div><div class="sb-user-badge">مدير</div></div>
-        <div class="sb-group">الرئيسية</div>
-        <button class="sb-link on" onclick="showP('dashboard',this)"><span class="sb-ico">📊</span>لوحة التحكم<span class="sb-line"></span></button>
-        <button class="sb-link" onclick="showP('reports',this)"><span class="sb-ico">📈</span>التقارير والإحصاء<span class="sb-line"></span></button>
+        <div class="sb-user"><div class="sb-user-av">م</div><div><div class="sb-user-name" data-t="admin_name">مدير النظام</div><div class="sb-user-role" data-t="admin_role">Administrator</div></div><div class="sb-user-badge" data-t="admin_mode">مدير</div></div>
+        <div class="sb-group" data-t="nav_dashboard">الرئيسية</div>
+        <button class="sb-link on" onclick="showP('dashboard',this)"><span class="sb-ico">📊</span><span data-t="nav_dashboard">لوحة التحكم</span><span class="sb-line"></span></button>
+        <button class="sb-link" onclick="showP('reports',this)"><span class="sb-ico">📈</span><span data-t="nav_reports">التقارير والإحصاء</span><span class="sb-line"></span></button>
         <div class="sb-sep"></div>
         <div class="sb-group">إدارة المحتوى</div>
         <button class="sb-link" onclick="showP('classes',this)"><span class="sb-ico">🏫</span>الصفوف الدراسية<span class="sb-line"></span></button>
@@ -77,7 +88,7 @@
     <main class="main">
         <!-- ================= DASHBOARD ================= -->
         <div class="page" id="p-dashboard">
-            <div class="ph"><div><h1>لوحة التحكم</h1><p>مرحباً بك في منصة اقرأ التعليمية — العراق 🇮🇶</p></div><div class="ph-actions"><button class="btn btn-ghost btn-sm">↓ تصدير التقرير</button><button class="btn btn-primary btn-sm" onclick="openM('mClass')">+ إضافة صف جديد</button></div></div>
+            <div class="ph"><div><h1 data-t="nav_dashboard">لوحة التحكم</h1><p data-t="db_welcome">مرحباً بك في منصة اقرأ التعليمية — العراق 🇮🇶</p></div><div class="ph-actions"><button class="btn btn-ghost btn-sm" data-t="export_report">↓ تصدير التقرير</button><button class="btn btn-primary btn-sm" onclick="openM('mClass')">+ <span data-t="add_new">إضافة صف جديد</span></button></div></div>
             <div class="kpis"><div class="kpi"><div class="kpi-ico">👥</div><div class="kpi-val">2,847</div><div class="kpi-label">إجمالي الطلاب</div><div class="kpi-trend">↑ 12% هذا الشهر</div></div><div class="kpi"><div class="kpi-ico">💳</div><div class="kpi-val">1,204</div><div class="kpi-label">المشتركون النشطون</div><div class="kpi-trend">↑ 8% هذا الأسبوع</div></div><div class="kpi"><div class="kpi-ico">💰</div><div class="kpi-val">18.4M</div><div class="kpi-label">الإيرادات (دينار)</div><div class="kpi-trend">↑ 23% هذا الشهر</div></div><div class="kpi"><div class="kpi-ico">🎬</div><div class="kpi-val">342</div><div class="kpi-label">إجمالي الفيديوهات</div><div class="kpi-trend">↑ 15 جديد</div></div></div>
             <div class="g2c"><div class="card"><div class="card-hd"><div><div class="card-title">أكثر المواد مشاهدةً</div><div class="card-sub">آخر 30 يوماً</div></div></div><div class="bars"><div class="bar-row"><div class="bar-lbl">الرياضيات</div><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div><div class="bar-val">88%</div></div><div class="bar-row"><div class="bar-lbl">الفيزياء</div><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><div class="bar-val">75%</div></div><div class="bar-row"><div class="bar-lbl">الكيمياء</div><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><div class="bar-val">62%</div></div></div></div><div class="card"><div class="card-hd"><div><div class="card-title">آخر المشتركين</div></div><button class="btn btn-ghost btn-xs" onclick="showP('users',null)">عرض الكل</button></div><div class="tw"><table><thead><tr><th>الطالب</th><th>المادة</th><th>الحالة</th></tr></thead><tbody><tr><td><div class="u-row"><div class="u-av">أ</div><div><div class="u-name">أحمد محمد علي</div><div class="u-meta">السادس العلمي</div></div></div></td><td><span class="chip chip-brand">رياضيات</span></td><td><span class="chip chip-green">● نشط</span></td></tr><tr><td><div class="u-row"><div class="u-av">ف</div><div><div class="u-name">فاطمة حسن</div><div class="u-meta">الخامس العلمي</div></div></div></td><td><span class="chip chip-brand">كلاس كامل</span></td><td><span class="chip chip-green">● نشط</span></td></tr></tbody></table></div></div></div>
             <div class="card"><div class="card-hd"><div class="card-title">آخر النشاطات</div><span class="chip chip-green">مباشر</span></div><div style="padding:4px 0"><div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border)"><div style="width:36px;height:36px;border-radius:50%;background:var(--p50);display:flex;align-items:center;justify-content:center;font-size:16px">📚</div><div style="flex:1"><div style="font-size:13px;font-weight:600">فيديو جديد: "قوانين نيوتن"</div><div style="font-size:11px;color:var(--ink4)">أ. سارة العمر • منذ 12 دقيقة</div></div><span class="chip chip-brand">فيزياء</span></div></div></div>
@@ -118,6 +129,8 @@
 <div id="toastBox"></div>
 
 <!-- Custom Scripts (Modular) -->
+<script src="js/i18n.js"></script>
+<script src="js/api.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/codes.js"></script>
